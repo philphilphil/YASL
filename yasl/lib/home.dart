@@ -7,6 +7,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
+  final TextEditingController _textEditingController =
+      new TextEditingController();
   TabController _tabController;
 
   @override
@@ -43,8 +45,41 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       floatingActionButton: new FloatingActionButton(
         backgroundColor: Theme.of(context).accentColor,
         child: new Icon(Icons.add),
-        onPressed: () => Navigator.pushNamed(context,"Recepies"),
+        onPressed: _showAddWidget,
       ),
     );
+  }
+
+  void _showAddWidget() {
+    var alert = new AlertDialog(
+        content: new Row(
+          children: <Widget>[
+            new Expanded(
+              child: new TextField(
+                controller: _textEditingController,
+                autofocus: true,
+                decoration: new InputDecoration(
+                    labelText: "Item",
+                    hintText: "Name of the item",
+                    icon: new Icon(Icons.note_add)),
+              ),
+            )
+          ],
+        ),
+        actions: <Widget>[
+          new FlatButton(
+              onPressed: () {
+                // _handleSubmit(_textEditingController.text);
+                _textEditingController.clear();
+              },
+              child: Text("Save")),
+          new FlatButton(
+              onPressed: () => Navigator.pop(context), child: Text("Cancel"))
+        ]);
+
+        showDialog(context: context, 
+        builder:(_) {
+          return alert;
+        });
   }
 }
