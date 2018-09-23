@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import './pages/shoppinglist.dart';
+import './pages/recepies.dart';
+
 
 class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
@@ -31,7 +34,18 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
            ]
          ),
        ),
-       body: new Container(),
+       body: new TabBarView(
+         controller: _tabController,
+         children: <Widget> [
+           new Shoppinglist(),
+           new Recepies()
+         ]
+       ),
+       floatingActionButton: new FloatingActionButton(
+         backgroundColor: Theme.of(context).accentColor,
+         child: new Icon(Icons.add),
+         onPressed: () => print("add"),
+       ),
     );
   }
 }
