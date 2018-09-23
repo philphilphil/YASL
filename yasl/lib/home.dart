@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:yasl/model/list_item.dart';
+import 'package:yasl/util/db_client.dart';
 import './pages/shoppinglist.dart';
 import './pages/recepies.dart';
 
@@ -10,6 +12,15 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
   final TextEditingController _textEditingController =
       new TextEditingController();
   TabController _tabController;
+var db = new DatabaseHelper();
+
+
+void _handleSubmit(String text) async {
+  _textEditingController.clear();
+  ListItem item = new ListItem(text, DateTime.now().toIso8601String());
+  int savedId = await db.saveItem(item);
+  print("Item saved with id: $savedId");
+  }
 
   @override
   void initState() {
@@ -69,16 +80,17 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         actions: <Widget>[
           new FlatButton(
               onPressed: () {
-                // _handleSubmit(_textEditingController.text);
-                _textEditingController.clear();
+                _handleSubmit(_textEditingController.text);
+                //_textEditingController.clear();
               },
               child: Text("Save")),
           new FlatButton(
               onPressed: () => Navigator.pop(context), child: Text("Cancel"))
         ]);
 
-        showDialog(context: context, 
-        builder:(_) {
+    showDialog(
+        context: context,
+        builder: (_) {
           return alert;
         });
   }
