@@ -16,6 +16,10 @@ class _ShoppinglistState extends State<Shoppinglist> {
   void initState() {
     //big help: https://flutter.institute/run-async-operation-on-widget-creation/
     super.initState();
+    _reloadList();
+  }
+
+  void _reloadList() {
     _readItemsToList().then((result) {
       setState(() {
         _result = result;
@@ -29,7 +33,6 @@ class _ShoppinglistState extends State<Shoppinglist> {
     items.forEach((item) {
       _itemList.add(ListItem.map(item));
     });
-
     return _itemList;
   }
 
@@ -37,7 +40,7 @@ class _ShoppinglistState extends State<Shoppinglist> {
     _textEditingController.clear();
     ListItem item = new ListItem(text, DateTime.now().toIso8601String());
     int savedId = await db.saveItem(item);
-    //print("Item saved with id: $savedId");
+    _reloadList();
   }
 
   void _showAddWidget() {
