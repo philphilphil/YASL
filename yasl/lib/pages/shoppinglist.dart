@@ -11,11 +11,18 @@ class _ShoppinglistState extends State<Shoppinglist> {
   var db = new DatabaseHelper();
   final TextEditingController _textEditingController =
       new TextEditingController();
+  TextEditingController filterCtrl = new TextEditingController();
+  String _filter;
 
   @override
   void initState() {
     //big help: https://flutter.institute/run-async-operation-on-widget-creation/
     super.initState();
+
+    filterCtrl.addListener(() {
+      _reloadList();
+    });
+
     _reloadList();
   }
 
@@ -23,6 +30,7 @@ class _ShoppinglistState extends State<Shoppinglist> {
     _readItemsToList().then((result) {
       setState(() {
         _result = result;
+        _filter = filterCtrl.text;
       });
     });
   }
@@ -92,15 +100,29 @@ class _ShoppinglistState extends State<Shoppinglist> {
 
     return Scaffold(
       body: new Column(children: <Widget>[
+        new TextField(
+          decoration: new InputDecoration(labelText: "Search something.."),
+          controller: filterCtrl,
+        ),
         new Flexible(
           child: new ListView.builder(
             padding: new EdgeInsets.all(4.0),
             reverse: false,
             itemCount: _result.length,
             itemBuilder: (_, int index) {
-              return Card(
-                  color: Colors.green,
-                  child: new ListTile(title: _result[index]));
+              if (_filter == null || _filter == "") {
+                return Card(
+                    color: Colors.green,
+                    child: new ListTile(title: _result[index]));
+              } else {
+                if (_result[index].name.toLowerCase().contains(_filter)) {
+                  return new Card(
+                      color: Colors.green,
+                      child: new ListTile(title: _result[index]));
+                } else {
+                  return new Container();
+                }
+              }
             },
           ),
         )
