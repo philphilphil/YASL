@@ -9,7 +9,6 @@ class Shoppinglist extends StatefulWidget {
 class _ShoppinglistState extends State<Shoppinglist> {
   var _result;
   var db = new DatabaseHelper();
-  final List<ListItem> _itemList = <ListItem>[];
   final TextEditingController _textEditingController =
       new TextEditingController();
 
@@ -26,7 +25,7 @@ class _ShoppinglistState extends State<Shoppinglist> {
 
   _readItemsToList() async {
     List items = await db.getAllItems();
-    _itemList.clear();
+    List<ListItem> _itemList = <ListItem>[];
     items.forEach((item) {
       _itemList.add(ListItem.map(item));
     });
@@ -39,7 +38,6 @@ class _ShoppinglistState extends State<Shoppinglist> {
     ListItem item = new ListItem(text, DateTime.now().toIso8601String());
     int savedId = await db.saveItem(item);
     //print("Item saved with id: $savedId");
-    _itemList.add(item);
   }
 
   void _showAddWidget() {
@@ -62,7 +60,6 @@ class _ShoppinglistState extends State<Shoppinglist> {
           new FlatButton(
               onPressed: () {
                 _handleSubmit(_textEditingController.text);
-                _textEditingController.clear();
               },
               child: Text("Save")),
           new FlatButton(
@@ -80,7 +77,14 @@ class _ShoppinglistState extends State<Shoppinglist> {
   Widget build(BuildContext context) {
     if (_result == null) {
       // This is what we show while we're loading
-      return new Container();
+      return new Scaffold(
+        body: new Container(),
+        floatingActionButton: new FloatingActionButton(
+          backgroundColor: Theme.of(context).accentColor,
+          child: new Icon(Icons.add),
+          onPressed: _showAddWidget,
+        ),
+      );
     }
 
     return Scaffold(
