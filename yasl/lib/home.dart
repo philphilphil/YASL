@@ -9,18 +9,12 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
-  final TextEditingController _textEditingController =
-      new TextEditingController();
+ 
   TabController _tabController;
 var db = new DatabaseHelper();
 
 
-void _handleSubmit(String text) async {
-  _textEditingController.clear();
-  ListItem item = new ListItem(text, DateTime.now().toIso8601String());
-  int savedId = await db.saveItem(item);
-  print("Item saved with id: $savedId");
-  }
+
 
   @override
   void initState() {
@@ -52,46 +46,9 @@ void _handleSubmit(String text) async {
       ),
       body: new TabBarView(
           controller: _tabController,
-          children: <Widget>[new Shoppinglist(), new Recepies()]),
-      floatingActionButton: new FloatingActionButton(
-        backgroundColor: Theme.of(context).accentColor,
-        child: new Icon(Icons.add),
-        onPressed: _showAddWidget,
-      ),
+          children: <Widget>[new Shoppinglist(), new Recepies()])
     );
   }
 
-  void _showAddWidget() {
-    var alert = new AlertDialog(
-        content: new Row(
-          children: <Widget>[
-            new Expanded(
-              child: new TextField(
-                controller: _textEditingController,
-                autofocus: true,
-                decoration: new InputDecoration(
-                    labelText: "Item",
-                    hintText: "Name of the item",
-                    icon: new Icon(Icons.note_add)),
-              ),
-            )
-          ],
-        ),
-        actions: <Widget>[
-          new FlatButton(
-              onPressed: () {
-                _handleSubmit(_textEditingController.text);
-                //_textEditingController.clear();
-              },
-              child: Text("Save")),
-          new FlatButton(
-              onPressed: () => Navigator.pop(context), child: Text("Cancel"))
-        ]);
-
-    showDialog(
-        context: context,
-        builder: (_) {
-          return alert;
-        });
-  }
+ 
 }
