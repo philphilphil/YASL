@@ -9,12 +9,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
- 
   TabController _tabController;
-var db = new DatabaseHelper();
-
-
-
+  var db = new DatabaseHelper();
 
   @override
   void initState() {
@@ -46,9 +42,12 @@ var db = new DatabaseHelper();
       ),
       body: new TabBarView(
           controller: _tabController,
-          children: <Widget>[new Shoppinglist(), new Recepies()])
+          children: <Widget>[new Shoppinglist(), new Recepies()]),
+      floatingActionButton: new FloatingActionButton(
+        backgroundColor: Theme.of(context).accentColor,
+        child: new Icon(Icons.add),
+        onPressed: null, // _showAddWidget,
+      ),
     );
   }
-
- 
 }

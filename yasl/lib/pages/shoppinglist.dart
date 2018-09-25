@@ -86,8 +86,8 @@ class _ShoppinglistState extends State<Shoppinglist> {
 
   @override
   Widget build(BuildContext context) {
+    //when result is not there yet, return empty
     if (_result == null) {
-      // This is what we show while we're loading
       return new Scaffold(
         body: new Container(),
         floatingActionButton: new FloatingActionButton(
@@ -98,40 +98,34 @@ class _ShoppinglistState extends State<Shoppinglist> {
       );
     }
 
-    return Scaffold(
-      body: new Column(children: <Widget>[
-        new TextField(
-          decoration: new InputDecoration(labelText: "Search something.."),
-          controller: filterCtrl,
-        ),
-        new Flexible(
-          child: new ListView.builder(
-            padding: new EdgeInsets.all(4.0),
-            reverse: false,
-            itemCount: _result.length,
-            itemBuilder: (_, int index) {
-              if (_filter == null || _filter == "") {
-                return Card(
+    //load normal widget
+    return Container(
+        child: new Column(children: <Widget>[
+      new TextField(
+        controller: filterCtrl,
+      ),
+      new Flexible(
+        child: new ListView.builder(
+          padding: new EdgeInsets.all(4.0),
+          reverse: false,
+          itemCount: _result.length,
+          itemBuilder: (_, int index) {
+            if (_filter == null || _filter == "") {
+              return Card(
+                  color: Colors.green,
+                  child: new ListTile(title: _result[index]));
+            } else {
+              if (_result[index].name.toLowerCase().contains(_filter)) {
+                return new Card(
                     color: Colors.green,
                     child: new ListTile(title: _result[index]));
               } else {
-                if (_result[index].name.toLowerCase().contains(_filter)) {
-                  return new Card(
-                      color: Colors.green,
-                      child: new ListTile(title: _result[index]));
-                } else {
-                  return new Container();
-                }
+                return new Container();
               }
-            },
-          ),
-        )
-      ]),
-      floatingActionButton: new FloatingActionButton(
-        backgroundColor: Theme.of(context).accentColor,
-        child: new Icon(Icons.add),
-        onPressed: _showAddWidget,
-      ),
-    );
+            }
+          },
+        ),
+      )
+    ]));
   }
 }
