@@ -19,6 +19,7 @@ class _ShoppinglistState extends State<Shoppinglist> {
 
   @override
   Widget build(BuildContext context) {
+        _readItemsToList();
     return Scaffold(
       body: new Column(
         children: <Widget> [
@@ -43,6 +44,7 @@ class _ShoppinglistState extends State<Shoppinglist> {
 
   _readItemsToList() async {
     List items = await db.getAllItems();
+    _itemList.clear();
     items.forEach((item) {
       _itemList.add(ListItem.map(item));
       print("item");
