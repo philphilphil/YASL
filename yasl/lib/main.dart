@@ -9,8 +9,8 @@ class YASL extends StatelessWidget {
     return new MaterialApp(
       title: "Yet Another Shopping List",
       theme: new ThemeData(
-            primaryColor: Colors.teal[100], 
-            accentColor: Colors.teal[700],
+            primaryColor: Colors.teal[700], 
+            accentColor: Colors.teal[100],
           ),
           home: new Home(),
     );

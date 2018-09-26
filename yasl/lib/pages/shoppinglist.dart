@@ -112,12 +112,12 @@ class _ShoppinglistState extends State<Shoppinglist> {
           itemBuilder: (_, int index) {
             if (_filter == null || _filter == "") {
               return Card(
-                  color: Colors.green,
+                  color: Theme.of(context).accentColor,
                   child: new ListTile(title: _result[index]));
             } else {
               if (_result[index].name.toLowerCase().contains(_filter)) {
                 return new Card(
-                    color: Colors.green,
+                    color: Theme.of(context).accentColor,
                     child: new ListTile(title: _result[index]));
               } else {
                 return new Container();
