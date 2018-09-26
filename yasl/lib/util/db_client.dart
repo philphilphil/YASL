@@ -14,6 +14,7 @@ class DatabaseHelper {
   final String columnId = "id";
   final String columnName = "name";
   final String columnDateCreated = "dateCreated";
+  final String columnDone = "done";
 
   static Database _db;
 
@@ -37,7 +38,7 @@ class DatabaseHelper {
 
   void _onCreate(Database db, int newVersion) async {
     await db.execute(
-        "CREATE TABLE $tableItems($columnId INTEGER PRIMARY KEY, $columnName TEXT, $columnDateCreated TEXT)");
+        "CREATE TABLE $tableItems($columnId INTEGER PRIMARY KEY, $columnName TEXT, $columnDateCreated TEXT, $columnDone integer not null)");
   }
 
   Future<int> saveItem(ListItem item) async {

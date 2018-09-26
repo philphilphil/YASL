@@ -5,7 +5,7 @@ class ListItem extends StatelessWidget {
   String _dateCreated;
   int _id;
   int _recepieId;
-  bool _done;
+  bool _done = false;
   String _doneDate;
 
   ListItem(this._name, this._dateCreated);
@@ -14,9 +14,11 @@ class ListItem extends StatelessWidget {
     this._name = obj["name"];
     this._dateCreated = obj["dateCreated"];
     this._id = obj["id"];
+    this._done = obj["done"];
   }
 
   String get name => _name;
+  bool get done => _done;
   String get dateCreated => _dateCreated;
   int get id => _id;
 
@@ -24,10 +26,11 @@ class ListItem extends StatelessWidget {
     var map = new Map<String, dynamic>();
     map["name"] = _name;
     map["dateCreated"] = _dateCreated;
-
+    map["done"] = _done;
     if (_id != null) {
       map["id"] = _id;
     }
+    
 
     return map;
   }
@@ -36,6 +39,7 @@ class ListItem extends StatelessWidget {
     this._name = map["name"];
     this._dateCreated = map["dateCreated"];
     this._id = map["id"];
+    this._done = map["done"];
   }
 
   @override

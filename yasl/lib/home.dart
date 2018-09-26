@@ -35,7 +35,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
               new Tab(text: "Recepies")
             ]),
         actions: <Widget>[
-          new Icon(Icons.search),
+          new Icon(Icons.check_box_outline_blank),
           new Padding(padding: const EdgeInsets.symmetric(horizontal: 5.0)),
           new Icon(Icons.more_vert)
         ],
