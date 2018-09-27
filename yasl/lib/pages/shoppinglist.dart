@@ -9,8 +9,8 @@ class Shoppinglist extends StatefulWidget {
 class _ShoppinglistState extends State<Shoppinglist> {
   var _result;
   var db = new DatabaseHelper();
-  final TextEditingController _textEditingController =
-      new TextEditingController();
+  var _addItemDisplayed = false;
+
   TextEditingController filterCtrl = new TextEditingController();
   String _filter;
 
@@ -27,6 +27,7 @@ class _ShoppinglistState extends State<Shoppinglist> {
   }
 
   void _reloadList() {
+    _addItemDisplayed = false;
     _readItemsToList().then((result) {
       setState(() {
         _result = result;
@@ -44,46 +45,6 @@ class _ShoppinglistState extends State<Shoppinglist> {
     return _itemList;
   }
 
-  void _handleSubmit(String text) async {
-    _textEditingController.clear();
-    ListItem item = new ListItem(text, DateTime.now().toIso8601String());
-    int savedId = await db.saveItem(item);
-    _reloadList();
-  }
-
-  void _showAddWidget() {
-    var alert = new AlertDialog(
-        content: new Row(
-          children: <Widget>[
-            new Expanded(
-              child: new TextField(
-                controller: _textEditingController,
-                autofocus: true,
-                decoration: new InputDecoration(
-                    labelText: "Item",
-                    hintText: "Name of the item",
-                    icon: new Icon(Icons.note_add)),
-              ),
-            )
-          ],
-        ),
-        actions: <Widget>[
-          new FlatButton(
-              onPressed: () {
-                _handleSubmit(_textEditingController.text);
-              },
-              child: Text("Save")),
-          new FlatButton(
-              onPressed: () => Navigator.pop(context), child: Text("Cancel"))
-        ]);
-
-    showDialog(
-        context: context,
-        builder: (_) {
-          return alert;
-        });
-  }
-
   @override
   Widget build(BuildContext context) {
     //when result is not there yet, return empty
@@ -93,7 +54,7 @@ class _ShoppinglistState extends State<Shoppinglist> {
         floatingActionButton: new FloatingActionButton(
           backgroundColor: Theme.of(context).accentColor,
           child: new Icon(Icons.add),
-          onPressed: _showAddWidget,
+          onPressed: null,
         ),
       );
     }
@@ -108,28 +69,65 @@ class _ShoppinglistState extends State<Shoppinglist> {
         child: new ListView.builder(
           padding: new EdgeInsets.all(4.0),
           reverse: false,
-          itemCount: _result.length,
+          itemCount: _result.length + 1, //+1 for eventuall "add item"
           itemBuilder: (_, int index) {
+            if (index > _result.length) {
+              return new Container();
+            }
+
+            // Check if anywhere in the list, an item exacly like this exists, if not, add a dummy card to add this item. this is here so the card is on #1
+            if (index == 0) {
+              var matchFound = false;
+              for (ListItem i in _result) {
+                if (i.name.toLowerCase() == _filter.toLowerCase()) {
+                  matchFound = true;
+                  break;
+                }
+              }
+
+              if (!matchFound && _filter != "") {
+                return new ListTile(
+                  leading: new CircleAvatar(
+                    backgroundColor: Colors.green
+                  ),
+                  title: new Text("Add $_filter to the list."),
+                );
+              } else {
+                return new Container();
+              }
+            }
+
+            var actualItemCount = index - 1;
+            print(actualItemCount);
+            //When filter is empty, just display everything
             if (_filter == null || _filter == "") {
-              print(_result[index].name);
-              print(_result[index].done);
-              // return Card(
-              //     color: Theme.of(context).accentColor,
-              //     child: new ListTile(title: _result[index]));
               return new CheckboxListTile(
-                title: new Text(_result[index].name),
-                value: true,
+                secondary: new CircleAvatar(
+                    backgroundColor: Colors.green
+                  ),
+                title: new Text(_result[actualItemCount].name),
+                value: _result[actualItemCount].done,
                 onChanged: (bool value) {
                   // setState(() {
-                   print("tap");
+                  print("tap");
                   // });
                 },
               );
+
+              //When filter not empty, do some things
             } else {
-              if (_result[index].name.toLowerCase().contains(_filter)) {
-                return new Card(
-                    color: Theme.of(context).accentColor,
-                    child: new ListTile(title: _result[index]));
+              if (_result[actualItemCount]
+                  .name
+                  .toLowerCase()
+                  .contains(_filter.toLowerCase())) {
+                return new CheckboxListTile(
+                    title: new Text(_result[actualItemCount].name),
+                    value: _result[actualItemCount].done,
+                    onChanged: (bool value) {
+                      // setState(() {
+                      print("tap");
+                      // });
+                    });
               } else {
                 return new Container();
               }
