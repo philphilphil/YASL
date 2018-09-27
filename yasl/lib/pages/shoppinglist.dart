@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yasl/model/list_item.dart';
+import 'package:yasl/util/ListItemCard.dart';
 import 'package:yasl/util/db_client.dart';
 
 class Shoppinglist extends StatefulWidget {
@@ -71,6 +72,7 @@ class _ShoppinglistState extends State<Shoppinglist> {
           reverse: false,
           itemCount: _result.length + 1, //+1 for eventuall "add item"
           itemBuilder: (_, int index) {
+            //last item will not exist because index is +1
             if (index > _result.length) {
               return new Container();
             }
@@ -88,48 +90,24 @@ class _ShoppinglistState extends State<Shoppinglist> {
               if (!matchFound && _filter != "") {
                 return new ListTile(
                   leading: new CircleAvatar(backgroundColor: Colors.green),
-                  title: new Text("Add $_filter to the list."),
+                  title: new Text("Add $_filter."),
                 );
               } else {
                 return new Container();
               }
             }
 
-            var actualItemCount = index - 1;
-            print(actualItemCount);
+            var actualItemCount = index - 1; //because of the first card.
+            var name = _result[actualItemCount].name;
+            var done = _result[actualItemCount].done;
+
             //When filter is empty, just display everything
             if (_filter == null || _filter == "") {
-              return new CheckboxListTile(
-                secondary: new Container(
-                  height: 30.0,
-                  width: 3.0,
-                  color: Colors.green,
-                  margin: const EdgeInsets.only(left: 1.0, right: 1.0),
-                ),
-                title: new Text(_result[actualItemCount].name),
-                value: _result[actualItemCount].done,
-                
-                onChanged: (bool value) {
-                  // setState(() {
-                  print("tap");
-                  // });
-                },
-              );
-
-              //When filter not empty, do some things
+              return ListItemCard(name, done, "cat1");
             } else {
-              if (_result[actualItemCount]
-                  .name
-                  .toLowerCase()
-                  .contains(_filter.toLowerCase())) {
-                return new CheckboxListTile(
-                    title: new Text(_result[actualItemCount].name),
-                    value: _result[actualItemCount].done,
-                    onChanged: (bool value) {
-                      // setState(() {
-                      print("tap");
-                      // });
-                    });
+              //When filter not empty, do some things
+              if (name.toLowerCase().contains(_filter.toLowerCase())) {
+                return ListItemCard(name, done, "cat1");
               } else {
                 return new Container();
               }
