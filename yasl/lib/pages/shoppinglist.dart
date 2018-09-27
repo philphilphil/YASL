@@ -87,9 +87,7 @@ class _ShoppinglistState extends State<Shoppinglist> {
 
               if (!matchFound && _filter != "") {
                 return new ListTile(
-                  leading: new CircleAvatar(
-                    backgroundColor: Colors.green
-                  ),
+                  leading: new CircleAvatar(backgroundColor: Colors.green),
                   title: new Text("Add $_filter to the list."),
                 );
               } else {
@@ -102,11 +100,15 @@ class _ShoppinglistState extends State<Shoppinglist> {
             //When filter is empty, just display everything
             if (_filter == null || _filter == "") {
               return new CheckboxListTile(
-                secondary: new CircleAvatar(
-                    backgroundColor: Colors.green
-                  ),
+                secondary: new Container(
+                  height: 30.0,
+                  width: 3.0,
+                  color: Colors.green,
+                  margin: const EdgeInsets.only(left: 1.0, right: 1.0),
+                ),
                 title: new Text(_result[actualItemCount].name),
                 value: _result[actualItemCount].done,
+                
                 onChanged: (bool value) {
                   // setState(() {
                   print("tap");
