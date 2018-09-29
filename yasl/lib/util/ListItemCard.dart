@@ -4,15 +4,15 @@ import 'package:yasl/util/db_client.dart';
 
 class ListItemCard extends StatefulWidget {
   ListItem item;
-
+  Function callback;
   _ListItemCardState createState() => _ListItemCardState();
 
-  ListItemCard(this.item);
+  ListItemCard(this.item, this.callback);
 }
 
 class _ListItemCardState extends State<ListItemCard> {
   var db = new DatabaseHelper();
- 
+
   @override
   Widget build(BuildContext context) {
     return new ListTile(
@@ -30,6 +30,8 @@ class _ListItemCardState extends State<ListItemCard> {
       // subtitle: Text("1 x"),
       onTap: () {
         _updateItem(widget.item);
+        widget.callback();
+
         // setState(() {
         //widget.item = true;
         // });
@@ -77,8 +79,6 @@ class _ListItemCardState extends State<ListItemCard> {
     int savedId = await db.updateItem(item);
     print("item saved");
 
-    setState(() {
-          
-        });
+    setState(() {});
   }
 }

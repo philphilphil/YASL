@@ -46,6 +46,10 @@ class _ShoppinglistState extends State<Shoppinglist> {
     return _itemList;
   }
 
+  refresh() {
+    _reloadList();
+  }
+
   @override
   Widget build(BuildContext context) {
     //when result is not there yet, return empty
@@ -99,14 +103,14 @@ class _ShoppinglistState extends State<Shoppinglist> {
 
             var actualItemCount = index - 1; //because of the first card.
             var name = _result[actualItemCount].name;
-            
+
             //When filter is empty, just display everything
             if (_filter == null || _filter == "") {
-              return ListItemCard(_result[actualItemCount]);
+              return ListItemCard(_result[actualItemCount], this.refresh);
             } else {
               //When filter not empty, do some things
               if (name.toLowerCase().contains(_filter.toLowerCase())) {
-                return ListItemCard(_result[actualItemCount]);
+                return ListItemCard(_result[actualItemCount], this.refresh);
               } else {
                 return new Container();
               }
