@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yasl/model/list_item.dart';
 import 'package:yasl/util/db_client.dart';
+import 'package:yasl/util/itemEditDialog.dart';
 
 class ListItemCard extends StatefulWidget {
   ListItem item;
@@ -41,7 +42,7 @@ class _ListItemCardState extends State<ListItemCard> {
 
   //Dialog for editing item
   void _showEditWidget() {
-    var edit = new Container();
+    var edit =  new ItemEditDialog();
 
     showDialog(
         context: context,
