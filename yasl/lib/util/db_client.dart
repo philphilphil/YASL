@@ -76,10 +76,10 @@ class DatabaseHelper {
         .delete(tableItems, where: "$columnId = ?", whereArgs: [id]);
   }
 
-  Future<int> updateItem(ListItem user) async {
+  Future<int> updateItem(ListItem item) async {
     var dbClient = await db;
-    return await dbClient.update(tableItems, user.toMap(),
-        where: "$columnId = ?", whereArgs: [user.id]);
+    return await dbClient.update(tableItems, item.toMap(),
+        where: "$columnId = ?", whereArgs: [item.id]);
   }
 
   Future close() async {
