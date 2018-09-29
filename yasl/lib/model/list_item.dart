@@ -1,65 +1,55 @@
 import 'package:flutter/material.dart';
 
 class ListItem extends StatelessWidget {
-  String _name;
-  String _dateCreated;
   int _id;
-  int _recepieId;
+  String name;
+  String desc;
+  int amount;
+  String _dateCreated;
   bool done = false;
-  String _doneDate;
-  String _category;
+  int category;
 
-  ListItem(this._name, this._dateCreated);
+  ListItem(this.name, this._dateCreated);
 
   ListItem.map(dynamic obj) {
-    this._name = obj["name"];
+    this.name = obj["name"];
     this._dateCreated = obj["dateCreated"];
     this._id = obj["id"];
     this.done = obj["done"] == 1;
+    this.desc = obj["desc"];
+    this.category = obj["category"];
+    this.amount = obj["amount"];
   }
 
-  String get name => _name;
-  String get category => _category;
- // bool get done => _done;
   String get dateCreated => _dateCreated;
   int get id => _id;
 
   Map<String, dynamic> toMap() {
     var map = new Map<String, dynamic>();
-    map["name"] = _name;
+    map["name"] = name;
     map["dateCreated"] = _dateCreated;
     map["done"] = done == true ? 1 : 0;
     if (_id != null) {
       map["id"] = _id;
     }
-    
-
+    map["desc"] = this.desc;
+    map["category"] = this.category;
+    map["amount"] = this.amount;
     return map;
   }
 
   ListItem.fromMap(Map<String, dynamic> map) {
-    this._name = map["name"];
+    this.name = map["name"];
     this._dateCreated = map["dateCreated"];
     this._id = map["id"];
     this.done = map["done"] == 1;
+    this.desc = map["desc"];
+    this.category = map["category"];
+    this.amount = map["amount"];
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.all(8.0),
-      child: new Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Text(
-            _name,
-            style: new TextStyle(
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
-                fontSize: 15.0),
-          )
-        ],
-      ),
-    );
+    return Container();
   }
 }

@@ -9,13 +9,6 @@ class DatabaseHelper {
   static final DatabaseHelper _instance = new DatabaseHelper.internal();
 
   factory DatabaseHelper() => _instance;
-
-  final String tableItems = "listItemTable";
-  final String columnId = "id";
-  final String columnName = "name";
-  final String columnDateCreated = "dateCreated";
-  final String columnDone = "done";
-
   static Database _db;
 
   Future<Database> get db async {
@@ -36,54 +29,42 @@ class DatabaseHelper {
     return ourDb;
   }
 
+  //items: int _id; String name; String desc; int amount; String _dateCreated; bool done = false; int category;
+
   void _onCreate(Database db, int newVersion) async {
     await db.execute(
-        "CREATE TABLE $tableItems($columnId INTEGER PRIMARY KEY, $columnName TEXT, $columnDateCreated TEXT, $columnDone integer not null)");
-  }
-
-  Future<int> saveItem(ListItem item) async {
-    var dbClient = await db;
-    int res = await dbClient.insert("$tableItems", item.toMap());
-    return res;
-  }
-
-  Future<List> getAllItems() async {
-    var dbClient = await db;
-    var result = await dbClient.rawQuery("SELECT * FROM $tableItems ORDER BY done ASC, name COLLATE NOCASE ASC");
-
-    return result.toList();
-  }
-
-  Future<int> getCount() async {
-    var dbClient = await db;
-    return Sqflite.firstIntValue(
-        await dbClient.rawQuery("SELECT COUNT(*) FROM $tableItems"));
-  }
-
-  Future<ListItem> getItem(int id) async {
-    var dbClient = await db;
-
-    var result = await dbClient
-        .rawQuery("SELECT * FROM $tableItems WHERE $columnId = $id");
-    if (result.length == 0) return null;
-    return new ListItem.fromMap(result.first);
-  }
-
-  Future<int> deleteItem(int id) async {
-    var dbClient = await db;
-
-    return await dbClient
-        .delete(tableItems, where: "$columnId = ?", whereArgs: [id]);
-  }
-
-  Future<int> updateItem(ListItem item) async {
-    var dbClient = await db;
-    return await dbClient.update(tableItems, item.toMap(),
-        where: "$columnId = ?", whereArgs: [item.id]);
+        "CREATE TABLE items(id INTEGER PRIMARY KEY, name TEXT, desc TEXT, amount INTEGER, category INTEGER, dateCreated TEXT, done integer not null)");
   }
 
   Future close() async {
     var dbClient = await db;
     return dbClient.close();
+  }
+
+//  ITEMS HELPERS  /////////////////////////////
+  Future<int> saveItem(ListItem item) async {
+    var dbClient = await db;
+    int res = await dbClient.insert("items", item.toMap());
+    return res;
+  }
+
+  Future<List> getAllItems() async {
+    var dbClient = await db;
+    var result = await dbClient.rawQuery(
+        "SELECT * FROM items ORDER BY done ASC, name COLLATE NOCASE ASC");
+
+    return result.toList();
+  }
+
+  Future<int> deleteItem(int id) async {
+    var dbClient = await db;
+
+    return await dbClient.delete("items", where: "id = ?", whereArgs: [id]);
+  }
+
+  Future<int> updateItem(ListItem item) async {
+    var dbClient = await db;
+    return await dbClient.update("items", item.toMap(),
+        where: "id = ?", whereArgs: [item.id]);
   }
 }
