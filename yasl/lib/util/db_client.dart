@@ -49,7 +49,7 @@ class DatabaseHelper {
 
   Future<List> getAllItems() async {
     var dbClient = await db;
-    var result = await dbClient.rawQuery("SELECT * FROM $tableItems");
+    var result = await dbClient.rawQuery("SELECT * FROM $tableItems ORDER BY done ASC, name COLLATE NOCASE ASC");
 
     return result.toList();
   }
