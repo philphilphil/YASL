@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:yasl/model/list_item.dart';
+import 'package:yasl/util/db_client.dart';
 
 class ListItemCard extends StatefulWidget {
-  String name;
-  String category;
-  bool done;
+  ListItem item;
+
   _ListItemCardState createState() => _ListItemCardState();
 
-  ListItemCard(this.name, this.done, this.category);
+  ListItemCard(this.item);
 }
 
 class _ListItemCardState extends State<ListItemCard> {
-
+  var db = new DatabaseHelper();
+ 
   @override
   Widget build(BuildContext context) {
     return new ListTile(
@@ -20,15 +22,16 @@ class _ListItemCardState extends State<ListItemCard> {
         color: Colors.green,
         margin: const EdgeInsets.only(left: 1.0, right: 1.0),
       ),
-      title: new Text(widget.name),
+      title: new Text(widget.item.name),
       trailing: new Checkbox(
-        value: widget.done,
+        value: widget.item.done,
       ),
       isThreeLine: false,
       // subtitle: Text("1 x"),
       onTap: () {
+        _updateItem(widget.item);
         // setState(() {
-        print("tap");
+        //widget.item = true;
         // });
       },
       onLongPress: () {
@@ -66,6 +69,16 @@ class _ListItemCardState extends State<ListItemCard> {
         context: context,
         builder: (_) {
           return alert;
+        });
+  }
+
+  void _updateItem(ListItem item) async {
+    item.done = !item.done;
+    int savedId = await db.updateItem(item);
+    print("item saved");
+
+    setState(() {
+          
         });
   }
 }

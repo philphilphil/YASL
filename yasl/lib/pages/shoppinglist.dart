@@ -99,15 +99,14 @@ class _ShoppinglistState extends State<Shoppinglist> {
 
             var actualItemCount = index - 1; //because of the first card.
             var name = _result[actualItemCount].name;
-            var done = _result[actualItemCount].done;
-
+            
             //When filter is empty, just display everything
             if (_filter == null || _filter == "") {
-              return ListItemCard(name, done, "cat1");
+              return ListItemCard(_result[actualItemCount]);
             } else {
               //When filter not empty, do some things
               if (name.toLowerCase().contains(_filter.toLowerCase())) {
-                return ListItemCard(name, done, "cat1");
+                return ListItemCard(_result[actualItemCount]);
               } else {
                 return new Container();
               }
