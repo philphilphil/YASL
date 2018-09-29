@@ -10,8 +10,6 @@ class Shoppinglist extends StatefulWidget {
 class _ShoppinglistState extends State<Shoppinglist> {
   var _result;
   var db = new DatabaseHelper();
-  var _addItemDisplayed = false;
-
   TextEditingController filterCtrl = new TextEditingController();
   String _filter;
 
@@ -27,8 +25,8 @@ class _ShoppinglistState extends State<Shoppinglist> {
     _reloadList();
   }
 
+  // reload data from db and set state
   void _reloadList() {
-    _addItemDisplayed = false;
     _readItemsToList().then((result) {
       setState(() {
         _result = result;
@@ -37,6 +35,7 @@ class _ShoppinglistState extends State<Shoppinglist> {
     });
   }
 
+  //get data from db
   _readItemsToList() async {
     List items = await db.getAllItems();
     List<ListItem> _itemList = <ListItem>[];
@@ -46,13 +45,14 @@ class _ShoppinglistState extends State<Shoppinglist> {
     return _itemList;
   }
 
+  //callback function
   refresh() {
     _reloadList();
   }
 
   @override
   Widget build(BuildContext context) {
-    //when result is not there yet, return empty
+    //when result is not there yet or no items, return empty
     if (_result == null) {
       return new Scaffold(
         body: new Container(),

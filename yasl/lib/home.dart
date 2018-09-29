@@ -15,7 +15,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
       new TextEditingController();
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     _tabController = new TabController(vsync: this, initialIndex: 0, length: 2);
   }
@@ -25,7 +24,6 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
     ListItem item = new ListItem(text, DateTime.now().toIso8601String());
     int savedId = await db.saveItem(item);
     print("item saved with id $savedId");
-    // _reloadList();
   }
 
   void _showAddWidget() {

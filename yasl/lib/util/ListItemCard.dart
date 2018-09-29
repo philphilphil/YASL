@@ -31,52 +31,29 @@ class _ListItemCardState extends State<ListItemCard> {
       onTap: () {
         _updateItem(widget.item);
         widget.callback();
-
-        // setState(() {
-        //widget.item = true;
-        // });
       },
       onLongPress: () {
-        _showAddWidget();
+        _showEditWidget();
       },
       contentPadding: EdgeInsets.symmetric(horizontal: 1.0, vertical: 0.0),
     );
   }
 
-  void _showAddWidget() {
-    var alert = new AlertDialog(
-        content: new Row(
-          children: <Widget>[
-            new Expanded(
-              child: new TextField(
-                //      controller: _textEditingController,
-                autofocus: true,
-                decoration: new InputDecoration(
-                    labelText: "Item",
-                    hintText: "Name of the item",
-                    icon: new Icon(Icons.note_add)),
-              ),
-            )
-          ],
-        ),
-        actions: <Widget>[
-          new FlatButton(
-              onPressed: () {
-                //_handleSubmit(_textEditingController.text);
-              },
-              child: Text("Save"))
-        ]);
+  //Dialog for editing item
+  void _showEditWidget() {
+    var edit = new Container();
 
     showDialog(
         context: context,
         builder: (_) {
-          return alert;
+          return edit;
         });
   }
 
+  //Update item on db
   void _updateItem(ListItem item) async {
     item.done = !item.done;
-    int savedId = await db.updateItem(item);
+    await db.updateItem(item);
     print("item saved");
 
     setState(() {});
