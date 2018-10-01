@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:yasl/util/Drawer.dart';
 
 class Recepies extends StatelessWidget {
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: ListView(
+  Widget build(BuildContext ctxt) {
+    return new Scaffold(
+      appBar: new AppBar(
+        title: new Text("Recepies"),
+      ),
+      drawer: new Drawerr(),
+      body: new ListView(
         children: <Widget>[
           ListTile(
             leading: Icon(Icons.fastfood),

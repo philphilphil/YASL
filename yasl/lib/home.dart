@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yasl/model/Listitem.dart';
+import 'package:yasl/util/Drawer.dart';
 import 'package:yasl/util/db_client.dart';
 import './pages/shoppinglist.dart';
 import './pages/recepies.dart';
@@ -7,9 +8,15 @@ import './pages/recepies.dart';
 class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
-enum SelectedMenuOption { premium, settings, categories, help,  }
+
+enum SelectedMenuOption {
+  premium,
+  settings,
+  categories,
+  help,
+}
+
 class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
-  
   TabController _tabController;
   var db = new DatabaseHelper();
   final TextEditingController _textEditingController =
@@ -62,58 +69,18 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    
     return new Scaffold(
       appBar: new AppBar(
         title: new Text("YASL"),
         //elevation: 0.7,
-        bottom: new TabBar(
-            controller: _tabController,
-            indicatorColor: Colors.teal[700],
-            tabs: <Widget>[
-              new Tab(
-                text: "Shopping list",
-              ),
-              new Tab(text: "Recepies")
-            ]),
-        actions: <Widget>[
-          new Icon(Icons.check_box_outline_blank),
-          new Padding(padding: const EdgeInsets.symmetric(horizontal: 5.0)),
-          new PopupMenuButton<SelectedMenuOption>(
-            onSelected: (SelectedMenuOption result) {
-              setState(() {
-               // _selection = result;
-              });
-            },
-            itemBuilder: (BuildContext context) => <PopupMenuEntry<SelectedMenuOption>>[
-                  const PopupMenuItem<SelectedMenuOption>(
-                    value: SelectedMenuOption.premium,
-                    child: const Text('Premium'),
-                  ),
-                  const PopupMenuItem<SelectedMenuOption>(
-                    value: SelectedMenuOption.categories,
-                    child: const Text('Manage categories'),
-                  ),
-                  const PopupMenuItem<SelectedMenuOption>(
-                    value: SelectedMenuOption.settings,
-                    child: const Text('Settings'),
-                  ),
-                  const PopupMenuItem<SelectedMenuOption>(
-                    value: SelectedMenuOption.help,
-                    child: const Text('Help'),
-                  ),
-                ],
-          )
-        ],
       ),
-      body: new TabBarView(
-          controller: _tabController,
-          children: <Widget>[new Shoppinglist(), new Recepies()]),
+      body: Center(child: Text('My Page!')),
       floatingActionButton: new FloatingActionButton(
         backgroundColor: Theme.of(context).accentColor,
         child: new Icon(Icons.add),
         onPressed: _showAddWidget,
       ),
+      drawer: new Drawerr()
     );
   }
 }

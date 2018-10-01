@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:yasl/model/Listitem.dart';
+import 'package:yasl/util/Drawer.dart';
 import 'package:yasl/util/ListItemCard.dart';
 import 'package:yasl/util/db_client.dart';
 
@@ -56,6 +57,7 @@ class _ShoppinglistState extends State<Shoppinglist> {
     if (_result == null) {
       return new Scaffold(
         body: new Container(),
+        drawer: new Drawerr(),
         floatingActionButton: new FloatingActionButton(
           backgroundColor: Theme.of(context).accentColor,
           child: new Icon(Icons.add),
@@ -65,59 +67,63 @@ class _ShoppinglistState extends State<Shoppinglist> {
     }
 
     //load normal widget
-    return Container(
-        child: new Column(children: <Widget>[
-      new TextField(
-        controller: filterCtrl,
-      ),
-      new Flexible(
-        child: new ListView.builder(
-          padding: new EdgeInsets.all(4.0),
-          reverse: false,
-          itemCount: _result.length + 1, //+1 for eventuall "add item"
-          itemBuilder: (_, int index) {
-            //last item will not exist because index is +1
-            if (index > _result.length) {
-              return new Container();
-            }
-
-            // Check if anywhere in the list, an item exacly like this exists, if not, add a dummy card to add this item. this is here so the card is on #1
-            if (index == 0) {
-              var matchFound = false;
-              for (ListItem i in _result) {
-                if (i.name.toLowerCase() == _filter.toLowerCase()) {
-                  matchFound = true;
-                  break;
-                }
-              }
-
-              if (!matchFound && _filter != "") {
-                return new ListTile(
-                  leading: new CircleAvatar(backgroundColor: Colors.green),
-                  title: new Text("Add $_filter."),
-                );
-              } else {
-                return new Container();
-              }
-            }
-
-            var actualItemCount = index - 1; //because of the first card.
-            var name = _result[actualItemCount].name;
-
-            //When filter is empty, just display everything
-            if (_filter == null || _filter == "") {
-              return ListItemCard(_result[actualItemCount], this.refresh);
-            } else {
-              //When filter not empty, do some things
-              if (name.toLowerCase().contains(_filter.toLowerCase())) {
-                return ListItemCard(_result[actualItemCount], this.refresh);
-              } else {
-                return new Container();
-              }
-            }
-          },
+    return new Scaffold(
+        appBar: new AppBar(
+          title: new Text("Recepies"),
         ),
-      )
-    ]));
+        drawer: new Drawerr(),
+        body: new Column(children: <Widget>[
+          new TextField(
+            controller: filterCtrl,
+          ),
+          new Flexible(
+            child: new ListView.builder(
+              padding: new EdgeInsets.all(4.0),
+              reverse: false,
+              itemCount: _result.length + 1, //+1 for eventuall "add item"
+              itemBuilder: (_, int index) {
+                //last item will not exist because index is +1
+                if (index > _result.length) {
+                  return new Container();
+                }
+
+                // Check if anywhere in the list, an item exacly like this exists, if not, add a dummy card to add this item. this is here so the card is on #1
+                if (index == 0) {
+                  var matchFound = false;
+                  for (ListItem i in _result) {
+                    if (i.name.toLowerCase() == _filter.toLowerCase()) {
+                      matchFound = true;
+                      break;
+                    }
+                  }
+
+                  if (!matchFound && _filter != "") {
+                    return new ListTile(
+                      leading: new CircleAvatar(backgroundColor: Colors.green),
+                      title: new Text("Add $_filter."),
+                    );
+                  } else {
+                    return new Container();
+                  }
+                }
+
+                var actualItemCount = index - 1; //because of the first card.
+                var name = _result[actualItemCount].name;
+
+                //When filter is empty, just display everything
+                if (_filter == null || _filter == "") {
+                  return ListItemCard(_result[actualItemCount], this.refresh);
+                } else {
+                  //When filter not empty, do some things
+                  if (name.toLowerCase().contains(_filter.toLowerCase())) {
+                    return ListItemCard(_result[actualItemCount], this.refresh);
+                  } else {
+                    return new Container();
+                  }
+                }
+              },
+            ),
+          )
+        ]));
   }
 }
