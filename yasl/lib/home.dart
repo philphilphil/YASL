@@ -7,8 +7,9 @@ import './pages/recepies.dart';
 class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
-
+enum SelectedMenuOption { premium, settings, categories, help,  }
 class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
+  
   TabController _tabController;
   var db = new DatabaseHelper();
   final TextEditingController _textEditingController =
@@ -61,6 +62,7 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    
     return new Scaffold(
       appBar: new AppBar(
         title: new Text("YASL"),
@@ -77,7 +79,31 @@ class _HomeState extends State<Home> with SingleTickerProviderStateMixin {
         actions: <Widget>[
           new Icon(Icons.check_box_outline_blank),
           new Padding(padding: const EdgeInsets.symmetric(horizontal: 5.0)),
-          new Icon(Icons.more_vert)
+          new PopupMenuButton<SelectedMenuOption>(
+            onSelected: (SelectedMenuOption result) {
+              setState(() {
+               // _selection = result;
+              });
+            },
+            itemBuilder: (BuildContext context) => <PopupMenuEntry<SelectedMenuOption>>[
+                  const PopupMenuItem<SelectedMenuOption>(
+                    value: SelectedMenuOption.premium,
+                    child: const Text('Premium'),
+                  ),
+                  const PopupMenuItem<SelectedMenuOption>(
+                    value: SelectedMenuOption.categories,
+                    child: const Text('Manage categories'),
+                  ),
+                  const PopupMenuItem<SelectedMenuOption>(
+                    value: SelectedMenuOption.settings,
+                    child: const Text('Settings'),
+                  ),
+                  const PopupMenuItem<SelectedMenuOption>(
+                    value: SelectedMenuOption.help,
+                    child: const Text('Help'),
+                  ),
+                ],
+          )
         ],
       ),
       body: new TabBarView(
