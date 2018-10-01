@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:yasl/model/list_item.dart';
+import 'package:yasl/model/Listitem.dart';
 import 'package:yasl/util/db_client.dart';
 import './pages/shoppinglist.dart';
 import './pages/recepies.dart';
