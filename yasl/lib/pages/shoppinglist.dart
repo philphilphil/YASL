@@ -71,13 +71,13 @@ class _ShoppinglistState extends State<Shoppinglist> {
     }
   }
 
+  //checks if an item exact name is present in the current item list
   bool _itemInList(String text) {
     for (ListItem i in _result) {
       if (i.name.toLowerCase() == text.toLowerCase()) {
         return true;
       }
     }
-
     return false;
   }
 
@@ -103,12 +103,17 @@ class _ShoppinglistState extends State<Shoppinglist> {
         ),
         drawer: new Drawerr(),
         body: new Column(children: <Widget>[
-          new TextField(
-            onEditingComplete: () {
-              _filterEditComplete();
-            },
-            controller: filterCtrl,
-          ),
+          new Stack(alignment: const Alignment(1.0, 1.0), children: <Widget>[
+            new TextField(
+              controller: filterCtrl,
+            ),
+            new FlatButton(
+                onPressed: () {
+                  FocusScope.of(context).requestFocus(new FocusNode());
+                  filterCtrl.clear();
+                },
+                child: new Icon(Icons.clear))
+          ]),
           new Flexible(
             child: new ListView.builder(
               padding: new EdgeInsets.all(4.0),
