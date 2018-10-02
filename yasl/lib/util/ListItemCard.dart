@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:yasl/model/Listitem.dart';
 import 'package:yasl/util/db_client.dart';
-import 'package:yasl/util/itemEditDialog.dart';
+import 'package:yasl/util/ItemEditDialog.dart';
 
 class ListItemCard extends StatefulWidget {
   ListItem item;
@@ -34,15 +34,15 @@ class _ListItemCardState extends State<ListItemCard> {
         widget.callback();
       },
       onLongPress: () {
-        _showEditWidget();
+        _showEditWidget(widget.item);
       },
       contentPadding: EdgeInsets.symmetric(horizontal: 1.0, vertical: 0.0),
     );
   }
 
   //Dialog for editing item
-  void _showEditWidget() {
-    var edit =  new ItemEditDialog();
+  void _showEditWidget(ListItem item2) {
+    var edit =  new ItemEditDialog(item2.id, widget.callback);
 
     showDialog(
         context: context,

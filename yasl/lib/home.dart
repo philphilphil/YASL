@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:yasl/model/Listitem.dart';
 import 'package:yasl/util/Drawer.dart';
 import 'package:yasl/util/db_client.dart';
-import './pages/shoppinglist.dart';
-import './pages/recepies.dart';
 
 class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();

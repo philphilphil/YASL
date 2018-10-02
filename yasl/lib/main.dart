@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'home.dart';
+import 'package:yasl/home.dart';
+
 
 void main() => runApp(new YASL());
 

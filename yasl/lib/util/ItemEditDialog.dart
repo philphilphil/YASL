@@ -1,7 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:yasl/model/ListItem.dart';
+import 'package:yasl/util/db_client.dart';
 
-class ItemEditDialog extends StatelessWidget {
+class ItemEditDialog extends StatefulWidget {
   var nameCtrl = new TextEditingController();
+  ListItem item;
+  int id;
+  Function callback;
+  ItemEditDialog(this.id, this.callback);
+
+  _ItemEditDialogState createState() => _ItemEditDialogState();
+}
+
+class _ItemEditDialogState extends State<ItemEditDialog> {
+  var nameCtrl = new TextEditingController();
+  var db = new DatabaseHelper();
+
+  _deleteItem() async {
+    db.deleteItem(widget.id);
+    widget.callback();
+    Navigator.pop(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +62,12 @@ class ItemEditDialog extends StatelessWidget {
                 },
                 child: Text("Save")),
             new FlatButton(
-                onPressed: () => Navigator.pop(context), child: Text("Cancel"))
+                onPressed: () => Navigator.pop(context), child: Text("Cancel")),
+            new FlatButton(
+                onPressed: () {
+                  _deleteItem();
+                },
+                child: Text("Delete"))
           ],
         )
       ],
