@@ -51,6 +51,14 @@ class _ShoppinglistState extends State<Shoppinglist> {
     _reloadList();
   }
 
+  void _addNewItem(String filter) async {
+    ListItem item = new ListItem(filter, DateTime.now().toIso8601String());
+    int savedId = await db.saveItem(item);
+    filterCtrl.clear();
+    refresh();
+    FocusScope.of(context).requestFocus(new FocusNode());
+  }
+
   @override
   Widget build(BuildContext context) {
     //when result is not there yet or no items, return empty
@@ -69,7 +77,7 @@ class _ShoppinglistState extends State<Shoppinglist> {
     //load normal widget
     return new Scaffold(
         appBar: new AppBar(
-          title: new Text("Recepies"),
+          title: new Text("Shopping List"),
         ),
         drawer: new Drawerr(),
         body: new Column(children: <Widget>[
@@ -101,6 +109,9 @@ class _ShoppinglistState extends State<Shoppinglist> {
                     return new ListTile(
                       leading: new CircleAvatar(backgroundColor: Colors.green),
                       title: new Text("Add $_filter."),
+                      onTap: () {
+                        _addNewItem(_filter);
+                      },
                     );
                   } else {
                     return new Container();
