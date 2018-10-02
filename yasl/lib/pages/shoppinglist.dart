@@ -59,6 +59,28 @@ class _ShoppinglistState extends State<Shoppinglist> {
     FocusScope.of(context).requestFocus(new FocusNode());
   }
 
+  void _filterEditComplete() async {
+    var text = filterCtrl.text;
+    bool matchFound = _itemInList(text);
+
+    if (!matchFound) {
+      _addNewItem(text);
+    } else {
+      FocusScope.of(context).requestFocus(new FocusNode());
+      filterCtrl.clear();
+    }
+  }
+
+  bool _itemInList(String text) {
+    for (ListItem i in _result) {
+      if (i.name.toLowerCase() == text.toLowerCase()) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     //when result is not there yet or no items, return empty
@@ -82,6 +104,9 @@ class _ShoppinglistState extends State<Shoppinglist> {
         drawer: new Drawerr(),
         body: new Column(children: <Widget>[
           new TextField(
+            onEditingComplete: () {
+              _filterEditComplete();
+            },
             controller: filterCtrl,
           ),
           new Flexible(
@@ -97,13 +122,7 @@ class _ShoppinglistState extends State<Shoppinglist> {
 
                 // Check if anywhere in the list, an item exacly like this exists, if not, add a dummy card to add this item. this is here so the card is on #1
                 if (index == 0) {
-                  var matchFound = false;
-                  for (ListItem i in _result) {
-                    if (i.name.toLowerCase() == _filter.toLowerCase()) {
-                      matchFound = true;
-                      break;
-                    }
-                  }
+                  var matchFound = _itemInList(_filter);
 
                   if (!matchFound && _filter != "") {
                     return new ListTile(
