@@ -103,9 +103,15 @@ class _ShoppinglistState extends State<Shoppinglist> {
 
     //load normal widget
     return new Scaffold(
-        appBar: new AppBar(
-          title: new Text("Shopping List"),
-        ),
+        appBar: new AppBar(title: new Text("Shopping List"), actions: <Widget>[
+          // action button
+          IconButton(
+            icon: Icon(Icons.check_box_outline_blank),
+            onPressed: () {
+              //_select(choices[0]);
+            },
+          ),
+        ]),
         drawer: new Drawerr(),
         body: new Column(children: <Widget>[
           new Stack(alignment: const Alignment(1.0, 1.0), children: <Widget>[
