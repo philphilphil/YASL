@@ -14,7 +14,19 @@ class ItemEditDialog extends StatefulWidget {
 
 class _ItemEditDialogState extends State<ItemEditDialog> {
   var nameCtrl = new TextEditingController();
+  var descCtrl = new TextEditingController();
   var db = new DatabaseHelper();
+  var item;
+
+  void initState() {
+    super.initState();
+
+    db.getItem(widget.id).then((result) {
+      setState(() {
+        item = result;
+      });
+    });
+  }
 
   _deleteItem() async {
     db.deleteItem(widget.id);
@@ -22,9 +34,24 @@ class _ItemEditDialogState extends State<ItemEditDialog> {
     Navigator.pop(context);
   }
 
+  _saveItem() async {
+    item.name = nameCtrl.text;
+    item.desc = descCtrl.text;
+
+    db.updateItem(item);
+    widget.callback();
+    Navigator.pop(context);
+  }
+
   @override
   Widget build(BuildContext context) {
-    nameCtrl.text = "asd";
+    if (item == null) {
+      return new Container();
+    }
+
+    nameCtrl.text = item.name;
+    descCtrl.text = item.desc;
+
     return new SimpleDialog(
       title: const Text("Edit"),
       contentPadding: EdgeInsets.all(15.0),
@@ -34,7 +61,7 @@ class _ItemEditDialogState extends State<ItemEditDialog> {
           decoration: InputDecoration(labelText: 'Item Name'),
         ),
         new TextField(
-          controller: nameCtrl,
+          controller: descCtrl,
           decoration: InputDecoration(labelText: 'Description'),
         ),
         new Row(
@@ -58,7 +85,7 @@ class _ItemEditDialogState extends State<ItemEditDialog> {
           children: <Widget>[
             new FlatButton(
                 onPressed: () {
-                  //_handleSubmit(_textEditingController.text);
+                  _saveItem();
                 },
                 child: Text("Save")),
             new FlatButton(

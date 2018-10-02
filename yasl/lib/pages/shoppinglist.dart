@@ -130,8 +130,7 @@ class _ShoppinglistState extends State<Shoppinglist> {
           ]),
           new Flexible(
             child: new ListView.builder(
-              padding: new EdgeInsets.all(4.0),
-              reverse: false,
+              padding: EdgeInsets.zero, // explicit padding as a workaround
               itemCount: _result.length + 1, //+1 for eventuall "add item"
               itemBuilder: (_, int index) {
                 //last item will not exist because index is +1

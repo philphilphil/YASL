@@ -59,6 +59,14 @@ class DatabaseHelper {
     return result.toList();
   }
 
+    Future<ListItem> getItem(int id) async {
+     var dbClient = await db;
+
+     var result = await dbClient.rawQuery("SELECT * FROM items WHERE id = $id");
+     if (result.length == 0) return null;
+     return new ListItem.fromMap(result.first);
+  }
+
   Future<int> deleteItem(int id) async {
     var dbClient = await db;
 

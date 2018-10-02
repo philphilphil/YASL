@@ -16,6 +16,8 @@ class _ListItemCardState extends State<ListItemCard> {
 
   @override
   Widget build(BuildContext context) {
+    //return new Text("asd");
+
     return new ListTile(
       leading: new Container(
         height: 30.0,
@@ -23,12 +25,12 @@ class _ListItemCardState extends State<ListItemCard> {
         color: Colors.green,
         margin: const EdgeInsets.only(left: 1.0, right: 1.0),
       ),
-      title: new Text(widget.item.name),
+      title: new Text(widget.item.name + "  x 3"),
       trailing: new Checkbox(
         value: widget.item.done,
       ),
       isThreeLine: false,
-      // subtitle: Text("1 x"),
+      subtitle: widget.item.desc == null ? Text("") : Text(widget.item.desc),
       onTap: () {
         _updateItem(widget.item);
         widget.callback();
@@ -42,7 +44,7 @@ class _ListItemCardState extends State<ListItemCard> {
 
   //Dialog for editing item
   void _showEditWidget(ListItem item2) {
-    var edit =  new ItemEditDialog(item2.id, widget.callback);
+    var edit = new ItemEditDialog(item2.id, widget.callback);
 
     showDialog(
         context: context,
