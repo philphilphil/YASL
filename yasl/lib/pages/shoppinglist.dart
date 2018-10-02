@@ -63,7 +63,9 @@ class _ShoppinglistState extends State<Shoppinglist> {
     var text = filterCtrl.text;
     bool matchFound = _itemInList(text);
 
-    if (!matchFound) {
+    print("match found $matchFound");
+
+    if (!matchFound && text != "") {
       _addNewItem(text);
     } else {
       FocusScope.of(context).requestFocus(new FocusNode());
@@ -106,6 +108,9 @@ class _ShoppinglistState extends State<Shoppinglist> {
           new Stack(alignment: const Alignment(1.0, 1.0), children: <Widget>[
             new TextField(
               controller: filterCtrl,
+              onEditingComplete: () {
+                _filterEditComplete();
+              },
             ),
             new FlatButton(
                 onPressed: () {
