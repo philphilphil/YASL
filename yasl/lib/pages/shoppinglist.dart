@@ -51,12 +51,15 @@ class _ShoppinglistState extends State<Shoppinglist> {
     _reloadList();
   }
 
-  void _addNewItem(String filter) async {
+  void _addNewItem(String filter, bool dismissKeyboard) async {
     ListItem item = new ListItem(filter, DateTime.now().toIso8601String());
     int savedId = await db.saveItem(item);
     filterCtrl.clear();
     refresh();
-    FocusScope.of(context).requestFocus(new FocusNode());
+
+    if (dismissKeyboard) {
+      FocusScope.of(context).requestFocus(new FocusNode());
+    }
   }
 
   void _filterEditComplete() async {
@@ -66,7 +69,7 @@ class _ShoppinglistState extends State<Shoppinglist> {
     print("match found $matchFound");
 
     if (!matchFound && text != "") {
-      _addNewItem(text);
+      _addNewItem(text, false);
     } else {
       FocusScope.of(context).requestFocus(new FocusNode());
       filterCtrl.clear();
@@ -139,7 +142,7 @@ class _ShoppinglistState extends State<Shoppinglist> {
                       leading: new CircleAvatar(backgroundColor: Colors.green),
                       title: new Text("Add $_filter."),
                       onTap: () {
-                        _addNewItem(_filter);
+                        _addNewItem(_filter, true);
                       },
                     );
                   } else {
