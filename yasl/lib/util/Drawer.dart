@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:yasl/pages/categories.dart';
 import 'package:yasl/pages/recepies.dart';
 import 'package:yasl/pages/shoppinglist.dart';
 
@@ -20,8 +21,10 @@ class Drawerr extends StatelessWidget {
           leading: new Icon(Icons.list),
           title: new Text('Shopping List'),
           onTap: () {
-           Navigator.push(context,
-                new MaterialPageRoute(builder: (context) => new Shoppinglist()));
+            Navigator.push(
+                context,
+                new MaterialPageRoute(
+                    builder: (context) => new Shoppinglist()));
           },
         ),
         new ListTile(
@@ -36,7 +39,8 @@ class Drawerr extends StatelessWidget {
           leading: new Icon(Icons.rounded_corner),
           title: new Text('Manage categories'),
           onTap: () {
-            Navigator.pop(context);
+            Navigator.push(context,
+                new MaterialPageRoute(builder: (context) => new Categories()));
           },
         ),
         new ListTile(
