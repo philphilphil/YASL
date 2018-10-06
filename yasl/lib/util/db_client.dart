@@ -25,8 +25,8 @@ class DatabaseHelper {
 
   initDb() async {
     Directory documentDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentDirectory.path, "maindb.db");
-    var ourDb = await openDatabase(path, version: 1, onCreate: _onCreate);
+    String path = join(documentDirectory.path, "maindb8.db");
+    var ourDb = await openDatabase(path, version: 2, onCreate: _onCreate);
     return ourDb;
   }
 
@@ -34,8 +34,20 @@ class DatabaseHelper {
 
   void _onCreate(Database db, int newVersion) async {
     await db.execute(
-        """CREATE TABLE items(id INTEGER PRIMARY KEY, name TEXT, desc TEXT, amount INTEGER, category INTEGER, dateCreated TEXT, done integer not null);
-           CREATE TABLE categories(id INTEGER PRIMARY KEY, name TEXT, colorCode TEXT, rank INTEGER);
+        """CREATE TABLE items(id INTEGER PRIMARY KEY, name TEXT, desc TEXT, amount INTEGER, category INTEGER, dateCreated TEXT, done INTEGER not null); """);
+    print("create table");
+    await db.execute(
+        """CREATE TABLE categories(id INTEGER PRIMARY KEY, name TEXT, colorCode TEXT, rank INTEGER, isActive INTEGER);
+           INSERT INTO categories VALUES (1, 'Fruits and Vegetables',  '0xFF40b74f', 1, 1);
+           INSERT INTO categories VALUES (2, 'Refrigerated',  '0xFF63b6ff', 2, 1);
+           INSERT INTO categories VALUES (3, 'Meat and Sausage',  '0xFFfc85c9', 3, 1);
+           INSERT INTO categories VALUES (4, 'Snacks and Sweets',  '0xFFf23e3e', 4, 1);
+           INSERT INTO categories VALUES (5, 'General Groceries',  '0xFFf9eb4a', 5, 1);
+           INSERT INTO categories VALUES (6, 'Bakery',  '0xFF845f2f', 6, 1);
+           INSERT INTO categories VALUES (7, 'Drinks',  '0xFF321c82', 7, 1);
+           INSERT INTO categories VALUES (8, 'Frozen',  '0xFF3f0aff', 8, 1);
+           INSERT INTO categories VALUES (9, 'Empty 1',  '0xFF827e7b', 9, 1);
+           INSERT INTO categories VALUES (10, 'Empty 2',  '0xFF262623', 10, 1);
         """);
   }
 
@@ -59,12 +71,12 @@ class DatabaseHelper {
     return result.toList();
   }
 
-    Future<ListItem> getItem(int id) async {
-     var dbClient = await db;
+  Future<ListItem> getItem(int id) async {
+    var dbClient = await db;
 
-     var result = await dbClient.rawQuery("SELECT * FROM items WHERE id = $id");
-     if (result.length == 0) return null;
-     return new ListItem.fromMap(result.first);
+    var result = await dbClient.rawQuery("SELECT * FROM items WHERE id = $id");
+    if (result.length == 0) return null;
+    return new ListItem.fromMap(result.first);
   }
 
   Future<int> deleteItem(int id) async {
@@ -75,8 +87,8 @@ class DatabaseHelper {
 
   Future<int> updateItem(ListItem item) async {
     var dbClient = await db;
-    return await dbClient.update("items", item.toMap(),
-        where: "id = ?", whereArgs: [item.id]);
+    return await dbClient
+        .update("items", item.toMap(), where: "id = ?", whereArgs: [item.id]);
   }
 
   //  CATEGORY HELPERS  /////////////////////////////
@@ -88,15 +100,17 @@ class DatabaseHelper {
 
   Future<List> getAllCategories() async {
     var dbClient = await db;
-    var result = await dbClient.rawQuery(
-        "SELECT * FROM categories ORDER BY rank DESC");
-
+    var result =
+        await dbClient.rawQuery("SELECT * FROM categories ORDER BY rank DESC");
+    print("db");
+    print(result);
     return result.toList();
   }
 
   Future<int> deleteCategory(int id) async {
     var dbClient = await db;
-    return await dbClient.delete("categories", where: "id = ?", whereArgs: [id]);
+    return await dbClient
+        .delete("categories", where: "id = ?", whereArgs: [id]);
   }
 
   Future<int> updateCategory(Category item) async {

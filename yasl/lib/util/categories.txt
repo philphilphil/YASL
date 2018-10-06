@@ -1,0 +1,11 @@
+Fruits and Vegetables
+Refrigerated
+Meat and Sausage
+Snacks and Sweets
+General Groceries
+Bakery
+Drinks
+Frozen
+Empty 1
+Empty 2
+
