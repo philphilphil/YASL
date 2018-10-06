@@ -13,21 +13,24 @@ class _CategoriesState extends State<Categories> {
         title: new Text("Manage Categories"),
       ),
       drawer: new Drawerr(),
-      body: new ListView(
+      body: new ReorderableListView(
         children: <Widget>[
           ListTile(
+            key: new ObjectKey("foo"),
             leading: Icon(Icons.fastfood),
             title: Text('Maultaschen'),
           ),
           ListTile(
+            key: new ObjectKey("2"),
             leading: Icon(Icons.photo_album),
             title: Text('Schnipo'),
           ),
           ListTile(
+            key: new ObjectKey("fo33o"),
             leading: Icon(Icons.phone),
             title: Text('Geschnezeltes'),
           ),
-        ],
+        ], onReorder: (int oldIndex, int newIndex) {},
       ),
     );
   }
