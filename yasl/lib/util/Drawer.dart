@@ -27,14 +27,14 @@ class Drawerr extends StatelessWidget {
                     builder: (context) => new Shoppinglist()));
           },
         ),
-        new ListTile(
-          leading: new Icon(Icons.kitchen),
-          title: new Text('Recepies'),
-          onTap: () {
-            Navigator.push(context,
-                new MaterialPageRoute(builder: (context) => new Recepies()));
-          },
-        ),
+        // new ListTile(
+        //   leading: new Icon(Icons.kitchen),
+        //   title: new Text('Recepies'),
+        //   onTap: () {
+        //     Navigator.push(context,
+        //         new MaterialPageRoute(builder: (context) => new Recepies()));
+        //   },
+        // ),
         new ListTile(
           leading: new Icon(Icons.rounded_corner),
           title: new Text('Manage categories'),
