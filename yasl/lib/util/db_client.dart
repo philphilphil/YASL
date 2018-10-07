@@ -109,9 +109,7 @@ class DatabaseHelper {
   Future<List> getAllCategories() async {
     var dbClient = await db;
     var result =
-        await dbClient.rawQuery("SELECT * FROM categories ORDER BY rank DESC");
-    print("db");
-    print(result);
+        await dbClient.rawQuery("SELECT * FROM categories ORDER BY rank ASC");
     return result.toList();
   }
 

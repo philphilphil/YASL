@@ -22,9 +22,8 @@ class _CategoriesState extends State<Categories> {
 
   // reload data from db and set state
   void _reloadList() {
-    print("load");
+    catgegorieItems.clear();
     _readItemsToList().then((result) {
-      print("load2");
       buildWidgets(result);
       setState(() {
         catgegorieItems = catgegorieItems;
@@ -35,13 +34,19 @@ class _CategoriesState extends State<Categories> {
   //get data from db
   _readItemsToList() async {
     List items = await db.getAllCategories();
-    print(items);
+    //print(items);
     List<Category> _itemList = new List<Category>();
     items.forEach((item) {
       //print(item.name);
       _itemList.add(Category.map(item));
     });
     return _itemList;
+  }
+
+  void _updateItem(Category item) async {
+    item.isActive = !item.isActive;
+    await db.updateCategory(item);
+    _reloadList();
   }
 
   @override
@@ -71,7 +76,7 @@ class _CategoriesState extends State<Categories> {
         value: i.isActive,
         onChanged: (bool value) {
           setState(() {
-            i.isActive = value;
+            _updateItem(i);
           });
         },
         secondary: new Container(
@@ -82,7 +87,5 @@ class _CategoriesState extends State<Categories> {
         ),
       ));
     }
-
-    print(catgegorieItems);
   }
 }
