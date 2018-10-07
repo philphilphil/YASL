@@ -5,6 +5,7 @@ class Category extends StatelessWidget {
   String colorCode;
   int rank;
   String name;
+  bool isActive;
 
   Category(this.name, this.colorCode);
 
@@ -13,6 +14,7 @@ class Category extends StatelessWidget {
     this.colorCode = obj["colorCode"];
     this._id = obj["id"];
     this.rank = obj["rank"];
+    this.isActive = obj["isActive"] == 1;
   }
 
   int get id => _id;
@@ -22,6 +24,7 @@ class Category extends StatelessWidget {
     map["name"] = name;
     map["colorCode"] = colorCode;
     map["rank"] = rank;
+    map["isActive"] = isActive == true ? 1 : 0;
     if (_id != null) {
       map["id"] = _id;
     }
@@ -33,6 +36,7 @@ class Category extends StatelessWidget {
     this.colorCode = obj["colorCode"];
     this._id = obj["id"];
     this.rank = obj["rank"];
+    this.isActive = obj["isActive"] == 1;
   }
 
   @override

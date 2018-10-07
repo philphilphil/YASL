@@ -12,7 +12,7 @@ class _CategoriesState extends State<Categories> {
   var _switch = true;
   var _result;
   var db = new DatabaseHelper();
-  List<Widget> catgegorieItems;
+  List<Widget> catgegorieItems = new List<Widget>();
 
   @override
   void initState() {
@@ -24,9 +24,8 @@ class _CategoriesState extends State<Categories> {
   void _reloadList() {
     print("load");
     _readItemsToList().then((result) {
-        print("load2");
-      BuildWidgets(result);
-        print(result);
+      print("load2");
+      buildWidgets(result);
       setState(() {
         catgegorieItems = catgegorieItems;
       });
@@ -37,9 +36,9 @@ class _CategoriesState extends State<Categories> {
   _readItemsToList() async {
     List items = await db.getAllCategories();
     print(items);
-    List<Category> _itemList = <Category>[];
+    List<Category> _itemList = new List<Category>();
     items.forEach((item) {
-      print(item.name);
+      //print(item.name);
       _itemList.add(Category.map(item));
     });
     return _itemList;
@@ -59,29 +58,31 @@ class _CategoriesState extends State<Categories> {
           // header: Card(
           //   child: Text("Drag to reorder. Tap to rename."),
           // ),
-          children: widget.catgegorieItems,
+          children: catgegorieItems,
           onReorder: (int oldIndex, int newIndex) {},
         ));
   }
 
-  void BuildWidgets(var result) {
+  void buildWidgets(var result) {
     for (Category i in result) {
       catgegorieItems.add(new SwitchListTile(
         key: Key(i.id.toString()),
         title: Text(i.name),
-        value: _switch,
+        value: i.isActive,
         onChanged: (bool value) {
           setState(() {
-            _switch = value;
+            i.isActive = value;
           });
         },
         secondary: new Container(
           height: 30.0,
           width: 30.0,
-          color: Colors.green,
+          color: Color(int.parse(i.colorCode)),
           margin: const EdgeInsets.only(left: 1.0, right: 1.0),
         ),
       ));
     }
+
+    print(catgegorieItems);
   }
 }
